@@ -1,0 +1,6 @@
+*.txt
+*.md
+.idea/
+/lib/
+/target/
+*.xml
