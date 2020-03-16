@@ -32,15 +32,10 @@ public class UpdateUserServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // String userId = req.getParameter("id");
-        //Long uid = Long.parseLong(userId);
-
         String userName = req.getParameter("name");
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
-        //if(userPassword == null || userPassword.isEmpty()) {
         User user = new User(userName, userPassword, userEmail);
-
 
         if (userPassword == null || userPassword.isEmpty()) {
             resp.sendRedirect("/list");

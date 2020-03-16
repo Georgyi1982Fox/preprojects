@@ -73,7 +73,7 @@ public class UserJdbcDAO implements UserDAO{
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setLong(1, id);
             boolean deleted = pst.executeUpdate() > 0;
-            pst.close();
+           // pst.close();
             return deleted;
         }
     }

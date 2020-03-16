@@ -15,10 +15,10 @@ public class UserHibernate {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "id")
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "id")
+    @Column(name = "email")
     private String email;
 
     public UserHibernate(){

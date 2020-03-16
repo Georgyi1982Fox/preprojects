@@ -12,7 +12,7 @@ public class UserHibernateDAO implements UserDAO {
     private Session session;
 
     public UserHibernateDAO(Session session) {
-
+        this.session = session;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class UserHibernateDAO implements UserDAO {
     public void updateUser(User user) throws SQLException {
         Transaction transaction = session.beginTransaction();
         User updateUser = (User) session.createQuery("FROM users");
-        session.update(user);
+        session.update(updateUser);
         transaction.commit();
         session.close();
     }

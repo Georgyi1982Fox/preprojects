@@ -27,7 +27,6 @@ public class UserService {
         }
     }
 
-
     public void addUser(User user) throws DBException, SQLException {
             if(!getUserDao().validateClient(user.getName())) {
                 try {
