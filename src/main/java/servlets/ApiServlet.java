@@ -1,7 +1,7 @@
 package servlets;
 
 import dbexception.DBException;
-import musicianService.UserService;
+import userService.UserService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

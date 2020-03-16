@@ -6,13 +6,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDao {
+public class UserJdbcDAO implements UserDAO{
     private Connection connection;
 
-    public UserDao(Connection connection){
+    public UserJdbcDAO(Connection connection){
         this.connection = connection;
     }
 
+    @Override
     public List<User> listAllUsers() throws SQLException {
         List<User> listUsers= new ArrayList<User>();
         String sql = "SELECT * FROM users";
@@ -35,6 +36,8 @@ public class UserDao {
         return listUsers;
     }
 
+
+    @Override
     public void addUser(User user)throws SQLException {
         String sql = "INSERT INTO users(name,password,email) VALUES (?,?,?)";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
@@ -46,6 +49,7 @@ public class UserDao {
 
     }
 
+    @Override
     public boolean validateClient(String name) throws SQLException{
         String query = "select * from users where name = ? ";
         try(PreparedStatement stmt = connection.prepareStatement(query)){
@@ -62,6 +66,8 @@ public class UserDao {
     }
 
 
+
+    @Override
     public boolean deleteUser(Long id)throws  SQLException {
         String sql = "DELETE FROM users where id = ?";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
@@ -72,6 +78,7 @@ public class UserDao {
         }
     }
 
+    @Override
     public void updateUser(User user) throws SQLException {
         String sql = "UPDATE users SET name = ?,  password = ?, email = ? WHERE name = ?";
 
@@ -83,6 +90,8 @@ public class UserDao {
             pst.executeUpdate();
         }
     }
+
+
 
     public User getUserById(Long id)throws SQLException {
         User user = null;

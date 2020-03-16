@@ -1,7 +1,7 @@
-package musicianService;
+package userService;
 
 //import dao.MusicianDao;
-import dao.UserDao;
+import dao.UserJdbcDAO;
 import dbexception.DBException;
 import model.User;
 
@@ -15,8 +15,8 @@ public class UserService {
     public UserService() {
     }
 
-    private static UserDao getUserDao() {
-        return new UserDao(getMysqlConnection());
+    private static UserJdbcDAO getUserDao() {
+        return new UserJdbcDAO(getMysqlConnection());
     }
 
     public List<User> listAllUsers() throws DBException {
@@ -71,7 +71,7 @@ public class UserService {
         }
     }
     public void cleanUp()throws DBException{
-        UserDao userDao = getUserDao ();
+        UserJdbcDAO userDao = getUserDao ();
         try {
             userDao.deleteTable ();
         }catch (SQLException e){
@@ -79,7 +79,7 @@ public class UserService {
         }
     }
     public void createTable() throws DBException{
-        UserDao userDao = getUserDao ();
+        UserJdbcDAO userDao = getUserDao ();
         try {
             userDao.createTable();
         }catch (SQLException e){
@@ -87,7 +87,7 @@ public class UserService {
         }
     }
 
-    private static Connection getMysqlConnection(){
+    public static Connection getMysqlConnection(){
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
             StringBuilder url = new StringBuilder();
