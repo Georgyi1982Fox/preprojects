@@ -13,16 +13,10 @@ import java.sql.SQLException;
 
 @WebServlet("/delete")
 public class DeleteUserServlet extends HttpServlet {
-
-
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        UserService userService = new UserService();
-
         Long id = Long.parseLong(req.getParameter("id"));
             try {
-                userService.deleteUser(id);
-            } catch (DBException e) {
-                e.printStackTrace();
+                UserService.getInstance().deleteUser(id);
             } catch (SQLException e) {
                 e.printStackTrace();
             }

@@ -1,110 +1,54 @@
 package userService;
 
-//import dao.MusicianDao;
-import dao.UserJdbcDAO;
-import dbexception.DBException;
-import model.User;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
+
+
+import dao.UserHibernateDAO;
+import model.User;
+import org.hibernate.SessionFactory;
+
 import java.sql.SQLException;
 import java.util.List;
 
+import static util.DBHelper.*;
+
 public class UserService {
-    public UserService() {
+
+    private static UserService userHibernateService;
+    private SessionFactory sessionFactory;
+
+    private UserService(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
-    private static UserJdbcDAO getUserDao() {
-        return new UserJdbcDAO(getMysqlConnection());
-    }
-
-    public List<User> listAllUsers() throws DBException {
-        try {
-            return getUserDao().listAllUsers();
-        } catch (SQLException e) {
-            throw new DBException(e);
+    public static UserService getInstance() {
+        if (userHibernateService == null) {
+            userHibernateService = new UserService(getSessionFactory());
         }
+        return userHibernateService;
     }
 
-    public void addUser(User user) throws DBException, SQLException {
-            if(!getUserDao().validateClient(user.getName())) {
-                try {
-                    getUserDao().addUser(user);
-                } catch (SQLException e) {
-                    throw new DBException(e);
-                }
-            }
+    public void addUser(User user){
+        new UserHibernateDAO(sessionFactory.openSession()).addUser(user);
     }
 
-    public boolean deleteUser(Long id) throws DBException, SQLException {
-            {
-                return getUserDao().deleteUser(id);
-            }
-        }
-
-
-    public void updateUser(User user) throws DBException {
-
-        try {
-            getUserDao().updateUser(user);
-        } catch (SQLException e) {
-            throw new DBException (e);
-        }
+    public List<User> listAllUsers() throws SQLException {
+        return new UserHibernateDAO(sessionFactory.openSession()).listAllUsers();
     }
 
-
-    public boolean validateClient (String name) throws DBException {
-        try {
-            return   getUserDao().validateClient(name);
-        } catch (SQLException e){
-        throw new DBException(e);
-       }
+    public boolean validateClient(String name) throws SQLException{
+        return new UserHibernateDAO(sessionFactory.openSession()).validateClient(name);
     }
 
-    public User getUserById(Long id)throws DBException{
-        try {
-            return getUserDao ( ).getUserById(id);
-        }catch (SQLException e){
-            throw new DBException(e);
-        }
-    }
-    public void cleanUp()throws DBException{
-        UserJdbcDAO userDao = getUserDao ();
-        try {
-            userDao.deleteTable ();
-        }catch (SQLException e){
-            throw new DBException(e);
-        }
-    }
-    public void createTable() throws DBException{
-        UserJdbcDAO userDao = getUserDao ();
-        try {
-            userDao.createTable();
-        }catch (SQLException e){
-            throw new DBException(e);
-        }
+    public User getUserById(Long id)throws SQLException{
+        return new UserHibernateDAO(sessionFactory.openSession()).getUserById(id);
     }
 
-    public static Connection getMysqlConnection(){
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
-            StringBuilder url = new StringBuilder();
-            url.
-                    append ("jdbc:mysql://").        //db type
-                    append ("localhost:").           //host name
-                    append ("3306/").                //port
-                    append ("db_example?").          //db name
-                    append ("user=root&").          //login
-                    append ("password=hjk_Esk1982!").   //password
-                    append("&serverTimezone=UTC");//timezone
+    public void updateUser(User user) throws SQLException{
+        new UserHibernateDAO(sessionFactory.openSession()).updateUser(user);
+    }
 
-            System.out.println("URL: " + url + "\n");
-            Connection connection = DriverManager.getConnection(url.toString());
-            return connection;
-        }catch(SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e){
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
+    public boolean deleteUser(Long id) throws SQLException{
+        return new UserHibernateDAO(sessionFactory.openSession()).deleteUser(id);
     }
 }

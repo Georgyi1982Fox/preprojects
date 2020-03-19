@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/update")
 public class UpdateUserServlet extends HttpServlet {
-    UserService userService = new UserService();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -22,8 +22,8 @@ public class UpdateUserServlet extends HttpServlet {
 
         User userOne= null;
         try {
-            userOne = userService.getUserById(userId);
-        } catch (DBException e) {
+            userOne = UserService.getInstance().getUserById(userId);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         req.getServletContext().setAttribute("userOne", userOne);
@@ -41,8 +41,8 @@ public class UpdateUserServlet extends HttpServlet {
             resp.sendRedirect("/list");
         } else {
             try {
-                userService.updateUser(user);
-            } catch (DBException e) {
+                UserService.getInstance().updateUser(user);
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
             resp.sendRedirect("/list");

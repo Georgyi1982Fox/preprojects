@@ -1,6 +1,7 @@
 package dao;
 
 import model.User;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -8,7 +9,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserHibernateDAO implements UserDAO {
-
     private Session session;
 
     public UserHibernateDAO(Session session) {
@@ -35,7 +35,7 @@ public class UserHibernateDAO implements UserDAO {
         List<User> allUsers;
         try {
             Transaction transaction = session.beginTransaction();
-            allUsers = session.createQuery("FROM users").list();
+            allUsers = session.createQuery("FROM User").list();
             transaction.commit();
         } finally {
             session.close();
@@ -46,7 +46,7 @@ public class UserHibernateDAO implements UserDAO {
     @Override
     public boolean validateClient(String name) throws SQLException {
         Transaction transaction = session.beginTransaction();
-        User user = (User)session.createQuery("FROM users WHERE name:=name")
+        User user = (User)session.createQuery("FROM User WHERE name:=name")
                 .setParameter("name", name)
                 .setMaxResults(1)
                 .uniqueResult();
@@ -59,28 +59,33 @@ public class UserHibernateDAO implements UserDAO {
 
     public User getUserById(Long id)throws SQLException {
         Transaction transaction = session.beginTransaction();
-        User userById = (User) session.createQuery("FROM users WHERE id:=id")
+        User userById = (User) session.createQuery("FROM User WHERE id=:id")
                 .setParameter("id", id)
+                .setMaxResults(1)
                 .uniqueResult();
+        User user = new User(userById.getId(), userById.getName(),userById.getEmail());
         transaction.commit();
         session.close();
-    return userById;
-
+    return user;
     }
 
     @Override
     public void updateUser(User user) throws SQLException {
-        Transaction transaction = session.beginTransaction();
-        User updateUser = (User) session.createQuery("FROM users");
-        session.update(updateUser);
-        transaction.commit();
-        session.close();
+        //Transaction transaction = session.beginTransaction();
+        Query query  = session.createQuery("update User u set name =:name, password=:password, email=:email WHERE name=:name");
+                query.setParameter("name", user.getName());
+                query.setParameter("password", user.getPassword());
+                query.setParameter("email", user.getEmail());
+                query.setParameter("name", user.getName());
+                int result = query.executeUpdate();
+                session.getTransaction().commit();
+                session.close();
     }
 
     @Override
     public boolean deleteUser(Long id) throws SQLException {
         Transaction transaction = session.beginTransaction();
-        User deleteUser = (User) session.createQuery("FROM users WHERE id:=id")
+        User deleteUser = (User) session.createQuery("FROM User WHERE id=:id")
                 .setParameter("id", id)
                 .uniqueResult();
         session.delete(deleteUser);

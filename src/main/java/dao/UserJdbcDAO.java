@@ -36,7 +36,6 @@ public class UserJdbcDAO implements UserDAO{
         return listUsers;
     }
 
-
     @Override
     public void addUser(User user)throws SQLException {
         String sql = "INSERT INTO users(name,password,email) VALUES (?,?,?)";
@@ -46,7 +45,6 @@ public class UserJdbcDAO implements UserDAO{
             pst.setString(3, user.getEmail());
             pst.executeUpdate();
         }
-
     }
 
     @Override
@@ -64,8 +62,6 @@ public class UserJdbcDAO implements UserDAO{
             return false;
         }
     }
-
-
 
     @Override
     public boolean deleteUser(Long id)throws  SQLException {
