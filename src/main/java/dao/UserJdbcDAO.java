@@ -32,7 +32,6 @@ public class UserJdbcDAO implements UserDAO{
         }catch (SQLException e){
            throw new SQLException();
         }
-
         return listUsers;
     }
 
@@ -69,7 +68,6 @@ public class UserJdbcDAO implements UserDAO{
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setLong(1, id);
             boolean deleted = pst.executeUpdate() > 0;
-           // pst.close();
             return deleted;
         }
     }
@@ -77,7 +75,6 @@ public class UserJdbcDAO implements UserDAO{
     @Override
     public void updateUser(User user) throws SQLException {
         String sql = "UPDATE users SET name = ?,  password = ?, email = ? WHERE name = ?";
-
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setString(1, user.getName());
             pst.setString(2, user.getPassword());
@@ -87,21 +84,15 @@ public class UserJdbcDAO implements UserDAO{
         }
     }
 
-
-
     public User getUserById(Long id)throws SQLException {
         User user = null;
         String sql = "SELECT * FROM users WHERE id = ?";
-
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setLong(1, id);
             ResultSet resultSet = pst.executeQuery();
-
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                //String password = resultSet.getString("password");
                 String email = resultSet.getString("email");
-
                 user = new User(id, name, email);
             }
 

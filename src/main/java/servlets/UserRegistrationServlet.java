@@ -16,17 +16,18 @@ import java.sql.SQLException;
 public class UserRegistrationServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         req.getRequestDispatcher("userPage.jsp").forward(req, resp);
     }
-
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("name");
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
-
         User user = new User(userName, userPassword, userEmail);
-        UserService.getInstance().addUser(user);
+        try {
+            UserService.getInstance().addUser(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         resp.sendRedirect("list");
     }
 }

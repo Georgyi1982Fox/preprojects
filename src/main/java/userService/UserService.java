@@ -1,54 +1,56 @@
 package userService;
 
-
-
-
+import dao.UserDAO;
 import dao.UserHibernateDAO;
+import dao.UserJdbcDAO;
 import model.User;
-import org.hibernate.SessionFactory;
-
 import java.sql.SQLException;
 import java.util.List;
 
 import static util.DBHelper.*;
 
 public class UserService {
+    private static UserService userService;
+    private static UserDAO userDAO;
 
-    private static UserService userHibernateService;
-    private SessionFactory sessionFactory;
+    public static UserDAO getUserDao(){
+        if(userDAO == null){
+            userDAO = new UserJdbcDAO(getMysqlConnection());
+        }
+        return userDAO;
+    }
 
-    private UserService(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+    private UserService() {
     }
 
     public static UserService getInstance() {
-        if (userHibernateService == null) {
-            userHibernateService = new UserService(getSessionFactory());
+        if (userService == null) {
+            userService = new UserService();
         }
-        return userHibernateService;
+        return userService;
     }
 
-    public void addUser(User user){
-        new UserHibernateDAO(sessionFactory.openSession()).addUser(user);
+    public void addUser(User user) throws SQLException {
+        getUserDao().addUser(user);
     }
 
     public List<User> listAllUsers() throws SQLException {
-        return new UserHibernateDAO(sessionFactory.openSession()).listAllUsers();
+        return getUserDao().listAllUsers();
     }
 
-    public boolean validateClient(String name) throws SQLException{
-        return new UserHibernateDAO(sessionFactory.openSession()).validateClient(name);
+    public boolean validateClient(String name) throws SQLException {
+        return getUserDao().validateClient(name);
     }
 
-    public User getUserById(Long id)throws SQLException{
-        return new UserHibernateDAO(sessionFactory.openSession()).getUserById(id);
+    public User getUserById(Long id) throws SQLException {
+        return getUserDao().getUserById(id);
     }
 
-    public void updateUser(User user) throws SQLException{
-        new UserHibernateDAO(sessionFactory.openSession()).updateUser(user);
+    public void updateUser(User user) throws SQLException {
+        getUserDao().updateUser(user);
     }
 
-    public boolean deleteUser(Long id) throws SQLException{
-        return new UserHibernateDAO(sessionFactory.openSession()).deleteUser(id);
+    public boolean deleteUser(Long id) throws SQLException {
+        return getUserDao().deleteUser(id);
     }
 }
