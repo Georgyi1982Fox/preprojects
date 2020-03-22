@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import userService.UserService;
 
 import java.sql.Connection;
 import java.sql.Driver;
@@ -13,16 +14,42 @@ import java.sql.SQLException;
 
 public class DBHelper {
 
+    private static DBHelper dbHelper;
+
     private static SessionFactory sessionFactory;
+
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = createSessionFactory();
         }
         return sessionFactory;
     }
+    private DBHelper() {
+    }
+
+    public static DBHelper getDbHelper(){
+        if(dbHelper == null){
+            dbHelper = new DBHelper();
+        }
+        return dbHelper;
+    }
+/*
+    private UserService() {
+    }
+
+    public static UserService getInstance() {
+        if (userService == null) {
+            userService = new UserService();
+        }
+        return userService;
+    }
+
+ */
+
+
 
     @SuppressWarnings("UnusedDeclaration")
-    private static Configuration getMySqlConfiguration() {
+    public static Configuration getMySqlConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -43,7 +70,6 @@ public class DBHelper {
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
-
 
     public static Connection getMysqlConnection() {
         try {

@@ -4,21 +4,21 @@ import model.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import util.DBHelper;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserHibernateDAO implements UserDAO {
-    private Session session;
+   private Session session;
 
     public UserHibernateDAO() {
-       // this.session = session;
     }
 
     @Override
     public void addUser(User user) {
-         session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
         transaction.commit();
@@ -64,7 +64,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void updateUser(User user) throws SQLException {
-         session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
         Query query  = session.createQuery("update User u SET u.name=:name, u.password=:password, u.email=:email WHERE u.name=:name");
                 query.setParameter("name", user.getName());

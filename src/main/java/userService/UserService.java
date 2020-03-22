@@ -15,7 +15,7 @@ public class UserService {
 
     public static UserDAO getUserDao(){
         if(userDAO == null){
-            userDAO = new UserJdbcDAO(getMysqlConnection());
+            userDAO = new UserHibernateDAO();
         }
         return userDAO;
     }
