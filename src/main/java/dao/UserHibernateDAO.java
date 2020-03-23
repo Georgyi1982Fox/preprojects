@@ -18,7 +18,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void addUser(User user) {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
         session.save(user);
         transaction.commit();
@@ -26,7 +26,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public List<User> listAllUsers() throws SQLException {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         List<User> allUsers;
          //session = DBHelper.getSessionFactory().openSession();
             Transaction transaction = session.beginTransaction();
@@ -37,7 +37,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public boolean validateClient(String name) throws SQLException {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
         User user = (User)session.createQuery("FROM User WHERE name:=name")
                 .setParameter("name", name)
@@ -51,7 +51,7 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     public User getUserById(Long id)throws SQLException {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
         User userById = (User) session.createQuery("FROM User WHERE id=:id")
                 .setParameter("id", id)
@@ -64,7 +64,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public void updateUser(User user) throws SQLException {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
         Query query  = session.createQuery("update User u SET u.name=:name, u.password=:password, u.email=:email WHERE u.name=:name");
                 query.setParameter("name", user.getName());
@@ -79,7 +79,7 @@ public class UserHibernateDAO implements UserDAO {
 
     @Override
     public boolean deleteUser(Long id) throws SQLException {
-        session = DBHelper.getSessionFactory().openSession();
+        session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
         User deleteUser = (User) session.createQuery("FROM User WHERE id=:id")
                 .setParameter("id", id)

@@ -19,7 +19,7 @@ public class UserDaoFactory {
                 return new UserHibernateDAO();
             }
             if ("userJdbcDAO".equals(userDaoType)) {
-                return new UserJdbcDAO(DBHelper.getMysqlConnection());
+                return new UserJdbcDAO(DBHelper.getConnection());
             } else
                 return null;
         }

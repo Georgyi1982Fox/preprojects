@@ -13,43 +13,24 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBHelper {
-
     private static DBHelper dbHelper;
-
-    private static SessionFactory sessionFactory;
-
-    public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
-            sessionFactory = createSessionFactory();
-        }
-        return sessionFactory;
-    }
     private DBHelper() {
     }
-
-    public static DBHelper getDbHelper(){
-        if(dbHelper == null){
+    public static DBHelper getDbHelper() {
+        if (dbHelper == null) {
             dbHelper = new DBHelper();
         }
         return dbHelper;
     }
-/*
-    private UserService() {
+
+    public static SessionFactory getConfiguration() {
+        Configuration conf = mySqlConfiguration();
+        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
+        builder.applySettings(conf.getProperties());
+        ServiceRegistry serviceRegistry = builder.build();
+        return conf.buildSessionFactory(serviceRegistry);
     }
-
-    public static UserService getInstance() {
-        if (userService == null) {
-            userService = new UserService();
-        }
-        return userService;
-    }
-
- */
-
-
-
-    @SuppressWarnings("UnusedDeclaration")
-    public static Configuration getMySqlConfiguration() {
+    private static Configuration mySqlConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -63,15 +44,8 @@ public class DBHelper {
         return configuration;
     }
 
-    private static SessionFactory createSessionFactory() {
-        Configuration configuration = getMySqlConfiguration();
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
-        builder.applySettings(configuration.getProperties());
-        ServiceRegistry serviceRegistry = builder.build();
-        return configuration.buildSessionFactory(serviceRegistry);
-    }
 
-    public static Connection getMysqlConnection() {
+    public static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.cj.jdbc.Driver").newInstance());
             StringBuilder url = new StringBuilder();
