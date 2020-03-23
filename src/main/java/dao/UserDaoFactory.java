@@ -9,20 +9,19 @@ import java.util.Properties;
 
 public class UserDaoFactory {
 
+    public UserDAO getDaoType() throws IOException {
+        try (InputStream inputStream = new FileInputStream("config.properties")) {
+            Properties pr = new Properties();
+            pr.load(inputStream);
 
-    public UserDAO getDaoType(String daoType) throws IOException{
-        InputStream inputStream = new FileInputStream("config.properties");
-
-        Properties pr = new Properties();
-        pr.load(inputStream);
-        String type = pr.getProperty("userDAO");
-
-        if(daoType == null){
-            return null;
+            String userDaoType = pr.getProperty("typeDao", "userHibernateDAO");
+            if ("userHibernateDAO".equals(userDaoType)) {
+                return new UserHibernateDAO();
+            }
+            if ("userJdbcDAO".equals(userDaoType)) {
+                return new UserJdbcDAO(DBHelper.getMysqlConnection());
+            } else
+                return null;
         }
-        else if (daoType == type) {
-            return new UserHibernateDAO();
-        }
-        return null;
     }
 }
