@@ -35,7 +35,8 @@ public class UpdateUserServlet extends HttpServlet {
         String userName = req.getParameter("name");
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
-        User user = new User(userName, userPassword, userEmail);
+        String role = req.getParameter("role");
+        User user = new User(userName, userPassword, userEmail, role);
 
         if (userPassword == null || userPassword.isEmpty()) {
             resp.sendRedirect("/list");

@@ -3,7 +3,10 @@ package userService;
 import dao.UserDAO;
 import dao.UserHibernateDAO;
 import dao.UserJdbcDAO;
+import dbexception.DBException;
 import model.User;
+import util.DBHelper;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,7 +18,7 @@ public class UserService {
 
     public static UserDAO getUserDao(){
         if(userDAO == null){
-            userDAO = new UserHibernateDAO();
+            userDAO = new UserJdbcDAO(DBHelper.getConnection());
         }
         return userDAO;
     }
@@ -38,8 +41,17 @@ public class UserService {
         return getUserDao().listAllUsers();
     }
 
-    public boolean validateClient(String name) throws SQLException {
-        return getUserDao().validateClient(name);
+    public boolean validateClient(String name, String password) throws SQLException {
+        try {
+            return getUserDao().validateClient(name, password);
+        }catch (SQLException e){
+            throw new SQLException(e);
+
+        }
+    }
+
+    public String getRoleByLoginPassword(String name, String password)throws SQLException{
+        return getUserDao().getRoleByLoginPassword(name,password);
     }
 
     public User getUserById(Long id) throws SQLException {

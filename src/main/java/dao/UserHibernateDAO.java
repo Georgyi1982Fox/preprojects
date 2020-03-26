@@ -28,7 +28,7 @@ public class UserHibernateDAO implements UserDAO {
     public List<User> listAllUsers() throws SQLException {
         session = DBHelper.getConfiguration().openSession();
         List<User> allUsers;
-         //session = DBHelper.getSessionFactory().openSession();
+         //session = DBHelper.getConfiguration().openSession();
             Transaction transaction = session.beginTransaction();
             allUsers = session.createQuery("FROM User").list();
             transaction.commit();
@@ -36,18 +36,33 @@ public class UserHibernateDAO implements UserDAO {
     }
 
     @Override
-    public boolean validateClient(String name) throws SQLException {
+    public boolean validateClient(String name, String password) throws SQLException {
         session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
-        User user = (User)session.createQuery("FROM User WHERE name:=name")
+        User user = (User)session.createQuery("FROM User  WHERE name=:name AND password=:password")
                 .setParameter("name", name)
+                .setParameter("password",password)
                 .setMaxResults(1)
                 .uniqueResult();
+        User existsUser = new User(user.getId(),user.getName(),user.getPassword());
         transaction.commit();
-        if(user.getName().equals(name)){
+        if(existsUser.getName().equals(name) && existsUser.getPassword().equals(password)){
             return true;
         }
         return false;
+    }
+
+   @Override
+    public String getRoleByLoginPassword(String name, String password)throws SQLException{
+        session=DBHelper.getConfiguration().openSession();
+        Transaction transaction = session.beginTransaction();
+        String role = (String) session.createQuery("FROM User WHERE name=:name AND password=:password")
+                .setParameter("name", name)
+                .setParameter("password", password)
+                .setMaxResults(1)
+                .uniqueResult();
+        transaction.commit();
+        return role;
     }
 
     public User getUserById(Long id)throws SQLException {

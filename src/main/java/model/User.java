@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
-
+   // private  String role;
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,8 @@ public class User {
 
     @Column(name = "email")
     private String email;
+
+    private  String role;
 
     public User(){
 
@@ -36,16 +38,25 @@ public class User {
         this.id = id;
         this.name = name;
         this.email = email;
+
     }
 
     public User(String password){
         this.password = password;
     }
 
-    public User(String name, String password, String email){
+    public User(String name, String password){
+        this.name=name;
+        this.password=password;
+    }
+
+
+    public User(String name, String password, String email, String role){
         this.name = name;
         this.password = password;
         this.email= email;
+        this.role = role;
+
     }
 
     public Long getId() {
@@ -78,6 +89,10 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole(){
+        return role;
     }
 }
 

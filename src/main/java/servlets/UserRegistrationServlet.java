@@ -14,6 +14,8 @@ import java.sql.SQLException;
 
 @WebServlet("/register")
 public class UserRegistrationServlet extends HttpServlet {
+    String role ="user";
+
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("userPage.jsp").forward(req, resp);
@@ -22,7 +24,8 @@ public class UserRegistrationServlet extends HttpServlet {
         String userName = req.getParameter("name");
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
-        User user = new User(userName, userPassword, userEmail);
+
+        User user = new User(userName, userPassword, userEmail,role);
         try {
             UserService.getInstance().addUser(user);
         } catch (SQLException e) {

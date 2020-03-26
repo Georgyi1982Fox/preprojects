@@ -11,7 +11,9 @@ public interface UserDAO {
 
     List<User> listAllUsers() throws SQLException;
 
-    boolean validateClient(String name) throws SQLException;
+    boolean validateClient(String name, String password) throws SQLException;
+
+    String getRoleByLoginPassword(String name, String password) throws SQLException;
 
     void updateUser(User user) throws SQLException;
 

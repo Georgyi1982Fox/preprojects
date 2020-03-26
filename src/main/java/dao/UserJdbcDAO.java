@@ -37,28 +37,46 @@ public class UserJdbcDAO implements UserDAO{
 
     @Override
     public void addUser(User user)throws SQLException {
-        String sql = "INSERT INTO users(name,password,email) VALUES (?,?,?)";
+        String sql = "INSERT INTO users(name,password,email) VALUES (?,?,?,)";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setString(1,user.getName());
             pst.setString(2, user.getPassword());
             pst.setString(3, user.getEmail());
+           // pst.setString(4, user.getRole());
             pst.executeUpdate();
         }
     }
 
     @Override
-    public boolean validateClient(String name) throws SQLException{
-        String query = "select * from users where name = ? ";
+    public boolean validateClient(String name, String password) throws SQLException{
+        String query = "select * from users where name = ? AND password = ? ";
         try(PreparedStatement stmt = connection.prepareStatement(query)){
             stmt.setString(1,name);
+            stmt.setString(2,password);
             ResultSet result = stmt.executeQuery();
             if(result.next()){
                 String userName = result.getString("name");
-                if(userName.equals(name)){
+                String userPassword = result.getString("password");
+                if(userName.equals(name) && userPassword.equals(password)){
                     return true;
                 }
             }
             return false;
+        }
+    }
+
+    @Override
+    public String getRoleByLoginPassword(String name, String password) throws SQLException {
+        String role = "";
+        String query = "select * from users where name =? AND password=?";
+        try(PreparedStatement stmt = connection.prepareStatement(query)){
+            stmt.setString(1,name);
+            stmt.setString(2,password);
+            ResultSet resultSet = stmt.executeQuery();
+            if(resultSet.next()){
+                 role = resultSet.getString("role");
+            }
+            return role;
         }
     }
 
