@@ -13,8 +13,7 @@
 <center>
     <h1>Users</h1>
     <h2>
-        <a href="/register">Add New User</a>
-        <a href="/list">List All Users</a>
+        <a href="/admin">List All Users</a>
     </h2>
 </center>
 
@@ -43,7 +42,7 @@
                 <td><c:out value="${user.password}" /></td>
                 <td><c:out value="${user.email}" /></td>
                 <td>
-                    <a href="/update?id=<c:out value='${user.id}' />">Edit</a>
+                    <a href= "admin/update?id=<c:out value='${user.id}' />">Edit</a>
                     <a href="/delete?id=<c:out value='${user.id}' />">Delete</a>
                 </td>
 

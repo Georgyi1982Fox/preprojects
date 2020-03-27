@@ -22,7 +22,7 @@
 
 <div align="center">
 
-<form action="/login" method="POST">
+<form action="/" method="POST">
 
     <table border="1" cellpadding="5">
 
@@ -32,7 +32,7 @@
         <p><b>Password:</b><br>
             <input type="password" name ="password" size="30"></p>
         <p><input type="submit" value="ОK"
-                  onclick="window.location='admin.jsp';" />
+                   />
 
 
          </table>

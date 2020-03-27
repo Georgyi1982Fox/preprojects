@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter("/admin/*")//Защищаемае часть
+@WebFilter(urlPatterns = "/admin/*, /user/*")//Защищаемае часть
 public class AuthFilterServlet implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -24,11 +24,12 @@ public class AuthFilterServlet implements Filter {
         if (logged) {
             String userRole = session.getAttribute("userRole").toString();
             if (userRole.equals("user")) {
-                response.sendRedirect(request.getContextPath() + "/user/user.jsp");
+                response.sendRedirect(request.getContextPath() + "/user");
             } else if (userRole.equals("admin")) {
-                response.sendRedirect(request.getContextPath() + "/admin/admin.jsp");
+                response.sendRedirect(request.getContextPath() + "/admin");
             }
         }
+
     }
 
     @Override
@@ -36,3 +37,5 @@ public class AuthFilterServlet implements Filter {
 
     }
 }
+
+

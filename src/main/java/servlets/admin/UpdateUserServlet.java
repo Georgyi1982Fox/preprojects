@@ -1,4 +1,4 @@
-package servlets;
+package servlets.admin;
 
 import dbexception.DBException;
 import model.User;
@@ -46,7 +46,7 @@ public class UpdateUserServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            resp.sendRedirect("/list");
+            resp.sendRedirect("/admin");
         }
     }
 

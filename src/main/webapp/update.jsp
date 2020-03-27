@@ -11,7 +11,7 @@
 
 
 
-        <form action="/update" method="post">
+        <form action="update.jsp" method="post">
             <table border="1" cellpadding="5">
 
 
@@ -50,7 +50,7 @@
                     <td colspan="2" align="center">
                         <input type="submit" value="update" />
 
-                        <a href="${pageContext.request.contextPath}/list">Cancel</a>
+                        <a href="${pageContext.request.contextPath}/admin">Cancel</a>
                     </td>
                 </tr>
 
@@ -58,7 +58,7 @@
 
 
 </form>
-<a href="/list">List</a>
+<a href="/admin">List</a>
 
 </div>
 

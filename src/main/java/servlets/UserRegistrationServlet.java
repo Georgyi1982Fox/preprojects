@@ -14,16 +14,23 @@ import java.sql.SQLException;
 
 @WebServlet("/register")
 public class UserRegistrationServlet extends HttpServlet {
-    String role ="user";
+    String role = "";
 
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("userPage.jsp").forward(req, resp);
+        req.getRequestDispatcher("register.jsp").forward(req, resp);
     }
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("name");
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
+
+        if(!userName.equals("Georgyi") && userPassword.equals("georgyi")){
+            role = "user";
+        }else{
+            role = "admin";
+        }
+
 
         User user = new User(userName, userPassword, userEmail,role);
         try {
@@ -31,6 +38,6 @@ public class UserRegistrationServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        resp.sendRedirect("list");
+        resp.sendRedirect("/register");
     }
 }

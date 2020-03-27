@@ -21,6 +21,7 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "role")
     private  String role;
 
     public User(){
@@ -55,7 +56,7 @@ public class User {
         this.name = name;
         this.password = password;
         this.email= email;
-        this.role = role;
+        this.role =  role;
 
     }
 

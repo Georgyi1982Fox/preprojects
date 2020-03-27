@@ -37,12 +37,12 @@ public class UserJdbcDAO implements UserDAO{
 
     @Override
     public void addUser(User user)throws SQLException {
-        String sql = "INSERT INTO users(name,password,email) VALUES (?,?,?,)";
+        String sql = "INSERT INTO users(name,password,email,role) VALUES (?,?,?,?)";
         try (PreparedStatement pst = connection.prepareStatement(sql)) {
             pst.setString(1,user.getName());
             pst.setString(2, user.getPassword());
             pst.setString(3, user.getEmail());
-           // pst.setString(4, user.getRole());
+            pst.setString(4, user.getRole());
             pst.executeUpdate();
         }
     }

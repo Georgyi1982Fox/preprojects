@@ -12,9 +12,11 @@
 </head>
 <body>
 
-
-<h1>j</h1>
-
+<div align="center">
+<h1>Hello "${userLogin}"</h1>
+    <h1>your login is "${userLogin}"</h1>
+    <h1>your password is "${userPassword}"</h1>
+</div>
 
 </body>
 </html>

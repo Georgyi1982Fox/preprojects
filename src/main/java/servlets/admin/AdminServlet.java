@@ -1,4 +1,4 @@
-package servlets;
+package servlets.admin;
 
 import dbexception.DBException;
 import model.User;
