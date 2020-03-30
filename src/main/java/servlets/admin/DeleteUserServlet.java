@@ -1,6 +1,5 @@
 package servlets.admin;
 
-import dbexception.DBException;
 import userService.UserService;
 
 import javax.servlet.ServletException;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/delete")
+@WebServlet("/admin/delete")
 public class DeleteUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         Long id = Long.parseLong(req.getParameter("id"));
@@ -20,7 +19,8 @@ public class DeleteUserServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            res.sendRedirect(req.getContextPath()+"/");
+            req.getRequestDispatcher("/admin").forward(req, res);
+
         }
     }
 

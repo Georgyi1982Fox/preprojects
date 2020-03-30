@@ -32,7 +32,7 @@
             <th>Email</th>
             <th>Actions</th>
         </tr>
-
+        db_example
 
         <c:forEach var="user" items="${users}">
             <tr>
@@ -42,8 +42,8 @@
                 <td><c:out value="${user.password}" /></td>
                 <td><c:out value="${user.email}" /></td>
                 <td>
-                    <a href= "admin/update?id=<c:out value='${user.id}' />">Edit</a>
-                    <a href="/delete?id=<c:out value='${user.id}' />">Delete</a>
+                    <a href= "/admin/update?id=<c:out value='${user.id}' />">Edit</a>
+                    <a href="/admin/delete?id=<c:out value='${user.id}' />">Delete</a>
                 </td>
 
             </tr>
@@ -53,6 +53,8 @@
         </table>
 
     </form>
+
+    <a href = "/?action=Login">Logout</a>
 
 </div>
 

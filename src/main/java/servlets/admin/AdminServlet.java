@@ -1,6 +1,5 @@
 package servlets.admin;
 
-import dbexception.DBException;
 import model.User;
 import userService.UserService;
 

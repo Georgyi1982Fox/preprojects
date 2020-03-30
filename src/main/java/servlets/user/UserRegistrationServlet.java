@@ -1,6 +1,5 @@
-package servlets;
+package servlets.user;
 
-import dbexception.DBException;
 import model.User;
 import userService.UserService;
 
@@ -38,6 +37,6 @@ public class UserRegistrationServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        resp.sendRedirect("/register");
+        resp.sendRedirect("/");
     }
 }

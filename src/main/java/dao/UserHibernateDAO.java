@@ -39,14 +39,13 @@ public class UserHibernateDAO implements UserDAO {
     public boolean validateClient(String name, String password) throws SQLException {
         session = DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
-        User user = (User)session.createQuery("FROM User  WHERE name=:name AND password=:password")
+        User user = (User)session.createQuery("FROM User  WHERE name=:name")
                 .setParameter("name", name)
-                .setParameter("password",password)
+                //.setParameter("password",password)
                 .setMaxResults(1)
                 .uniqueResult();
-        User existsUser = new User(user.getId(),user.getName(),user.getPassword());
         transaction.commit();
-        if(existsUser.getName().equals(name) && existsUser.getPassword().equals(password)){
+        if(user.getName().equals(name) && user.getPassword().equals(password)){
             return true;
         }
         return false;
@@ -56,13 +55,13 @@ public class UserHibernateDAO implements UserDAO {
     public String getRoleByLoginPassword(String name, String password)throws SQLException{
         session=DBHelper.getConfiguration().openSession();
         Transaction transaction = session.beginTransaction();
-        String role = (String) session.createQuery("FROM User WHERE name=:name AND password=:password")
+        User role = (User) session.createQuery("FROM User WHERE name=:name")
                 .setParameter("name", name)
                 .setParameter("password", password)
                 .setMaxResults(1)
                 .uniqueResult();
         transaction.commit();
-        return role;
+        return role.getName();
     }
 
     public User getUserById(Long id)throws SQLException {

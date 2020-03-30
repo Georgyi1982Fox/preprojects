@@ -1,6 +1,5 @@
 package servlets;
 
-import model.User;
 import userService.UserService;
 
 import javax.servlet.ServletException;
@@ -15,10 +14,21 @@ import java.sql.SQLException;
 @WebServlet("/")
 public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.getRequestDispatcher("login.jsp").forward(req, resp);
+        String action = req.getParameter("action");
+        if (action == null) {
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
+        } else if (action.equalsIgnoreCase("Logout")) {
+            HttpSession session = req.getSession();
+            session.removeAttribute("userLogin");
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
+        } else if (action.equalsIgnoreCase("Login")) {
+            req.getRequestDispatcher("login.jsp").forward(req, resp);
+
+        }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+
 
         String userLogin = req.getParameter("login");
         String userPassword = req.getParameter("password");
@@ -28,18 +38,18 @@ public class LoginServlet extends HttpServlet {
         try {
             if (UserService.getInstance().validateClient(userLogin, userPassword)) {
                 role = UserService.getInstance().getRoleByLoginPassword(userLogin, userPassword);
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        if (role.equals("user")) {
             session.setAttribute("userLogin", userLogin);
             session.setAttribute("userPassword", userPassword);
             session.setAttribute("userRole", role);
+            boolean url = req.getRequestURI().startsWith("/admin");
+            session.setAttribute("url", url);
 
-                    resp.sendRedirect("/user");
+            if (role.equals("user")) {
+            resp.sendRedirect("/user");
                 }else
                 if (role.equals("admin")) {
                     resp.sendRedirect("/admin");
@@ -47,10 +57,9 @@ public class LoginServlet extends HttpServlet {
                     resp.sendRedirect("/register");
                 }
             }
+}
 
 
-
-    }
 
 
 

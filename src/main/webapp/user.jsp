@@ -14,8 +14,9 @@
 
 <div align="center">
 <h1>Hello "${userLogin}"</h1>
-    <h1>your login is "${userLogin}"</h1>
-    <h1>your password is "${userPassword}"</h1>
+    <h2>your login is "${userLogin}"</h2>
+    <h2>your password is "${userPassword}"</h2>
+    <a href="${pageContext.request.contextPath}/">Home Page</a>
 </div>
 
 </body>

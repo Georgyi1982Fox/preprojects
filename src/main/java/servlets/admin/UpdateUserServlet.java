@@ -1,6 +1,5 @@
 package servlets.admin;
 
-import dbexception.DBException;
 import model.User;
 import userService.UserService;
 
@@ -12,13 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/update")
+@WebServlet("/admin/update")
 public class UpdateUserServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String userById = req.getParameter("id");
-        Long userId = Long.parseLong(userById);
+        Long userId = Long.parseLong(req.getParameter("id"));
 
         User userOne= null;
         try {
@@ -28,7 +26,8 @@ public class UpdateUserServlet extends HttpServlet {
         }
         req.getServletContext().setAttribute("userOne", userOne);
 
-        req.getRequestDispatcher("update.jsp").forward(req, resp);
+        req.getRequestDispatcher("/update.jsp").forward(req, resp);
+
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

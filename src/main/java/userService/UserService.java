@@ -19,6 +19,8 @@ public class UserService {
     public static UserDAO getUserDao(){
         if(userDAO == null){
             userDAO = new UserJdbcDAO(DBHelper.getConnection());
+                    //UserHibernateDAO();
+                    //new UserJdbcDAO(DBHelper.getConnection());
         }
         return userDAO;
     }
