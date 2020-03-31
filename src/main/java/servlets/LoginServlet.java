@@ -28,13 +28,13 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-
-
         String userLogin = req.getParameter("login");
         String userPassword = req.getParameter("password");
         String role = "";
         HttpSession session = req.getSession();
-
+        session.setAttribute("userLogin", userLogin);
+        session.setAttribute("userPassword", userPassword);
+        session.setAttribute("userRole", role);
         try {
             if (UserService.getInstance().validateClient(userLogin, userPassword)) {
                 role = UserService.getInstance().getRoleByLoginPassword(userLogin, userPassword);
@@ -42,21 +42,15 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-            session.setAttribute("userLogin", userLogin);
-            session.setAttribute("userPassword", userPassword);
-            session.setAttribute("userRole", role);
-            boolean url = req.getRequestURI().startsWith("/admin");
-            session.setAttribute("url", url);
-
-            if (role.equals("user")) {
+        if (role.equals("user")) {
             resp.sendRedirect("/user");
-                }else
-                if (role.equals("admin")) {
-                    resp.sendRedirect("/admin");
-                }else {
-                    resp.sendRedirect("/register");
-                }
-            }
+        }else
+        if (role.equals("admin")) {
+            resp.sendRedirect("/admin");
+        }else {
+            resp.sendRedirect("/register");
+        }
+    }
 }
 
 

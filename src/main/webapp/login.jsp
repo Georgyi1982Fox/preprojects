@@ -22,7 +22,7 @@
 
 <div align="center">
 
-<form action="/" method="POST">
+<form action="/" method="post">
 
     <table border="1" cellpadding="5">
 

@@ -13,7 +13,6 @@ import java.sql.SQLException;
 
 @WebFilter(urlPatterns = "/admin/*, /user/*")//Защищаемае часть
 public class AuthFilterServlet implements Filter {
-    private HttpServletRequest httpRequest;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -21,39 +20,34 @@ public class AuthFilterServlet implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession();
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        String uri = request.getRequestURI();
+        String userLogin =  request.getParameter("login");
 
-        String userLogin = request.getParameter("login");
-        String userPassword = request.getParameter("password");
-        String role = " ";
-        boolean url = request.getRequestURI().startsWith("/admin");
-
-        session.setAttribute("userLogin", userLogin);
-        session.setAttribute("userPassword", userPassword);
-        session.setAttribute("role", role);
-        session.setAttribute("url", url);
-
-        try {
-            role = UserService.getInstance().getRoleByLoginPassword(userLogin, userPassword);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        session.setAttribute("userLogin", userLogin);
-        session.setAttribute("userPassword", userPassword);
-        session.setAttribute("role", role);
-
-        boolean logged = session != null && session.getAttribute("userLogin")!= null && session.getAttribute("role").equals("admin");
-        boolean notLogged = session == null && session.getAttribute("userLogin") == null;
-        if (logged && url) {
-            response.sendRedirect("/admin");
-            filterChain.doFilter(request, response);
-        }
-        if (notLogged) {
+        if(userLogin == null && uri.endsWith("/admin")){
             response.sendRedirect("/");
+        }else {
+            chain.doFilter(req, res);
         }
+
+
+/*
+        HttpSession session = request.getSession(false);
+        String uri = ((HttpServletRequest) req).getRequestURI();
+        this.context.log("Requested Resource::"+uri);
+
+        if (session == null || session.getAttribute("userLogin") == null  && !uri.endsWith("/admin")) {
+            this.context.log("Unauthorized access request");
+            response.sendRedirect("login.html");
+        } else {
+            chain.doFilter(req, res); // Logged-in user found, so just continue request.
+        }
+
+ */
+
+
     }
 
     @Override
@@ -61,9 +55,6 @@ public class AuthFilterServlet implements Filter {
 
     }
 }
-
-
-
 
 
 

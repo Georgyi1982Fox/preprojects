@@ -24,10 +24,10 @@ public class UserRegistrationServlet extends HttpServlet {
         String userPassword = req.getParameter("password");
         String userEmail = req.getParameter("email");
 
-        if(!userName.equals("Georgyi") && userPassword.equals("georgyi")){
-            role = "user";
-        }else{
+        if(userName.equals("Georgyi") && userPassword.equals("georgyi")){
             role = "admin";
+        }else{
+            role = "user";
         }
 
 
