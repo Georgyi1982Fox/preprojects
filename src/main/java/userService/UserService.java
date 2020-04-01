@@ -3,14 +3,11 @@ package userService;
 import dao.UserDAO;
 import dao.UserHibernateDAO;
 import dao.UserJdbcDAO;
-import dbexception.DBException;
 import model.User;
 import util.DBHelper;
 
 import java.sql.SQLException;
 import java.util.List;
-
-import static util.DBHelper.*;
 
 public class UserService {
     private static UserService userService;
@@ -18,8 +15,8 @@ public class UserService {
 
     public static UserDAO getUserDao(){
         if(userDAO == null){
-            userDAO = new UserJdbcDAO(DBHelper.getConnection());
-                    //UserHibernateDAO();
+            userDAO = new UserHibernateDAO();
+                    //new UserHibernateDAO();
                     //new UserJdbcDAO(DBHelper.getConnection());
         }
         return userDAO;

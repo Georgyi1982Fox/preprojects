@@ -13,7 +13,7 @@
 <center>
     <h1>Users</h1>
     <h2>
-        <a href="/admin">List All Users</a>
+        <a href="/admin/list">List All Users</a>
     </h2>
 </center>
 
@@ -54,7 +54,7 @@
 
     </form>
 
-    <a href = "/?action=Login">Logout</a>
+    <a href = "/logout">Logout</a>
 
 </div>
 

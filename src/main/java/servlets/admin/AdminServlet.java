@@ -12,13 +12,13 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/admin")
+@WebServlet("/admin/list")
 public class AdminServlet extends HttpServlet {
     protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             List<User> users = UserService.getInstance().listAllUsers();
             req.setAttribute("users", users);
-            req.getRequestDispatcher("admin.jsp").forward(req, resp);
+            req.getRequestDispatcher("/admin.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
         }
